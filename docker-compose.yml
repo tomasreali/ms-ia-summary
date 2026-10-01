@@ -1,0 +1,29 @@
+services:
+  ms-ia-summary:
+    build: .
+    container_name: ms-ia-summary
+    ports:
+      - "8002:8000"
+    env_file:
+      - .env
+    depends_on:
+      - ollama
+    networks:
+      - summary_network
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: summary_ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    networks:
+      - summary_network
+
+volumes:
+  ollama_data:
+
+networks:
+  summary_network:
+    driver: bridge
